@@ -100,7 +100,7 @@ async function processFile(filePath, sourceDir = null) {
         let slug = toSlug(filename);
 
         // If filename is generic "draft.md", try to generate slug from content title
-        if (slug === 'draft' || slug === 'temp' || slug === 'input') {
+        if (slug === 'draft' || slug === 'temp' || slug === 'input' || slug === 'temp-clipboard-import') {
             const title = extractTitleFromContent(content);
             slug = toSlug(title);
         }
@@ -172,23 +172,57 @@ async function processFile(filePath, sourceDir = null) {
     }
 }
 
+import { execSync } from 'child_process';
+
+// Get content from clipboard (macOS only)
+function getClipboardContent() {
+    try {
+        return execSync('pbpaste').toString();
+    } catch (e) {
+        console.error('❌ Could not read clipboard (pbpaste failed).');
+        return '';
+    }
+}
+
 async function main() {
     const args = process.argv.slice(2);
     const sourceArg = args.find(arg => arg.startsWith('--source='));
     const fileArg = args.find(arg => arg.startsWith('--file='));
+    const pasteArg = args.includes('--paste');
 
     const sourceDir = sourceArg ? sourceArg.split('=')[1] : null;
     const singleFile = fileArg ? fileArg.split('=')[1] : null;
 
-    if (!sourceDir && !singleFile) {
-        console.error('❌ Error: Please provide --source=/dir OR --file=/path/to/file.md');
+    if (!sourceDir && !singleFile && !pasteArg) {
+        console.error('❌ Error: Please use one of the following:');
+        console.error('  --paste          (Import from clipboard)');
+        console.error('  --file=path.md   (Import single file)');
+        console.error('  --source=dir     (Import directory)');
         process.exit(1);
     }
 
     console.log(`🚀 Starting import...`);
     await ensureDir(TARGET_POSTS_DIR);
 
-    if (singleFile) {
+    if (pasteArg) {
+        console.log('📋 Reading from clipboard...');
+        const content = getClipboardContent();
+        if (!content.trim()) {
+            console.error('❌ Clipboard is empty!');
+            process.exit(1);
+        }
+        // Write to a temporary file locally to reuse processFile logic
+        const tempPath = path.join(__dirname, 'temp_clipboard_import.md');
+        await fs.writeFile(tempPath, content);
+
+        try {
+            await processFile(tempPath, null);
+        } finally {
+            // Cleanup
+            try { await fs.unlink(tempPath); } catch { }
+        }
+
+    } else if (singleFile) {
         await processFile(singleFile, path.dirname(singleFile));
     } else if (sourceDir) {
         let files;

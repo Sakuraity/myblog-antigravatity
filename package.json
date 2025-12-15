@@ -9,7 +9,8 @@
         "postbuild": "pagefind --site dist",
         "preview": "astro preview",
         "astro": "astro",
-        "import:content": "node scripts/import_youmind.mjs"
+        "import:content": "node scripts/import_youmind.mjs",
+        "import:paste": "node scripts/import_youmind.mjs --paste"
     },
     "dependencies": {
         "@astrojs/rss": "^4.0.14",
