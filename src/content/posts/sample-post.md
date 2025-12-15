@@ -4,4 +4,4 @@ description: "我的第一篇博客"
 pubDate: "2025-12-15"
 ---
 
-This is the new Gen.
+this is the new gen
