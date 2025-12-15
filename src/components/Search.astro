@@ -1,0 +1,65 @@
+<div id="search" class="ml-auto"></div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        // @ts-ignore
+        new PagefindUI({ 
+            element: "#search", 
+            showImages: false,
+            translations: {
+                placeholder: "搜索文章...",
+                clear_search: "清除",
+                load_more: "加载更多",
+                search_label: "站内搜索",
+                filters_label: "筛选",
+                zero_results: "没有找到关于 [SEARCH_TERM] 的文章",
+                many_results: "找到 [COUNT] 篇关于 [SEARCH_TERM] 的文章",
+                one_result: "找到 1 篇关于 [SEARCH_TERM] 的文章",
+                alt_search: "没有找到 [SEARCH_TERM] 的结果。显示 [DIFFERENT_TERM] 的结果",
+                search_suggestion: "没有找到 [SEARCH_TERM] 的结果。尝试一下搜 [SUGGESTION] ?",
+                searching: "正在搜索 [SEARCH_TERM]..."
+            }
+        });
+    });
+</script>
+
+<style is:global>
+    /* Minimalist styling for Pagefind to match "Rational Elegance" */
+    #search {
+        --pagefind-ui-scale: 0.8;
+        --pagefind-ui-primary: #d00000;
+        --pagefind-ui-text: #1a1a1a;
+        --pagefind-ui-background: #FDFBF9;
+        --pagefind-ui-border: #e5e7eb;
+        --pagefind-ui-tag: #e5e7eb;
+        --pagefind-ui-border-width: 1px;
+        --pagefind-ui-border-radius: 4px;
+        --pagefind-ui-image-border-radius: 4px;
+        --pagefind-ui-image-box-ratio: 3 / 2;
+        --pagefind-ui-font: "Inter", sans-serif;
+    }
+    
+    html.dark #search {
+        --pagefind-ui-text: #EDEDED;
+        --pagefind-ui-background: #131316;
+        --pagefind-ui-border: #333;
+        --pagefind-ui-tag: #333;
+    }
+    
+    .pagefind-ui__search-input {
+        background-color: transparent !important;
+        border: 1px solid var(--pagefind-ui-border) !important;
+        transition: border-color 0.2s;
+    }
+    
+    .pagefind-ui__search-input:focus {
+        border-color: var(--pagefind-ui-primary) !important;
+        outline: none;
+    }
+    
+    .pagefind-ui__result-thumb {
+        display: none !important; /* Force hide thumbs */
+    }
+</style>
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js" is:inline></script>

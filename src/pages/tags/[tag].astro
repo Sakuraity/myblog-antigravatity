@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('posts');
+  const uniqueTags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts.filter((post) => post.data.tags?.includes(tag));
+    return {
+      params: { tag },
+      props: { posts: filteredPosts },
+    };
+  });
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<Layout title={`标签: ${tag} | Kangyuan's Blog`}>
+  <header class="text-center mb-16">
+    <h1 class="text-3xl font-serif font-bold mb-4">#{tag}</h1>
+    <p class="text-text-muted-light dark:text-text-muted-dark">包含此标签的所有文章</p>
+  </header>
+
+  <section class="flex flex-col gap-12">
+    {posts.map((post) => (
+        <article class="flex flex-col items-start space-y-2 group">
+             <div class="flex items-center gap-3 text-xs font-medium tracking-widest uppercase text-text-muted-light dark:text-text-muted-dark">
+                <time datetime={post.data.pubDate.toISOString()}>
+                    {post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </time>
+                {post.data.category && (
+                    <>
+                        <span class="w-px h-3 bg-gray-300 dark:bg-gray-700"></span>
+                        <span>{post.data.category}</span>
+                    </>
+                )}
+            </div>
+            <h2 class="text-2xl font-serif font-bold text-text-light dark:text-text-dark group-hover:text-primary transition-colors">
+                <a href={`/posts/${post.slug}/`}>{post.data.title}</a>
+            </h2>
+             <p class="text-text-muted-light dark:text-text-muted-dark line-clamp-2">
+                {post.data.description}
+            </p>
+        </article>
+    ))}
+  </section>
+</Layout>

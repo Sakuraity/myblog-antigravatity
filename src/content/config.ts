@@ -5,6 +5,9 @@ const posts = defineCollection({
         title: z.string(),
         description: z.string(),
         pubDate: z.coerce.date(),
+        // New optional fields
+        tags: z.array(z.string()).optional(),
+        category: z.string().optional(),
     }),
 });
 

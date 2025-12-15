@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts');
+const uniqueTags = [...new Set(allPosts.map((post) => post.data.tags || []).flat())];
+---
+
+<Layout title="标签 | Kangyuan's Blog">
+	<div class="max-w-2xl mx-auto text-center">
+		<h1 class="font-serif text-4xl font-bold mb-8">Tags</h1>
+		<div class="flex flex-wrap justify-center gap-4">
+			{uniqueTags.map((tag) => (
+				<a 
+					href={`/tags/${tag}`} 
+					class="px-4 py-2 border border-black/10 dark:border-white/10 rounded-full text-sm font-medium hover:border-primary hover:text-primary transition-colors bg-white dark:bg-white/5"
+				>
+					#{tag}
+				</a>
+			))}
+		</div>
+	</div>
+</Layout>
