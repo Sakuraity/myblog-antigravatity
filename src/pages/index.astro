@@ -8,47 +8,70 @@ const posts = (await getCollection('posts')).sort(
 ---
 
 <Layout title="Kangyuan's Blog">
-	<section class="flex flex-col gap-16">
-		{posts.map((post) => (
-			<article class="group relative flex flex-col items-start space-y-3">
-				<div class="flex items-center gap-3 text-xs font-medium tracking-widest uppercase text-text-muted-light dark:text-text-muted-dark">
-					<time datetime={post.data.pubDate.toISOString()}>
-						{post.data.pubDate.toLocaleDateString('zh-CN', {
-							year: 'numeric',
-							month: 'long',
-							day: 'numeric',
-						})}
-					</time>
-					{post.data.category && (
-						<>
-							<span class="w-px h-3 bg-gray-300 dark:bg-gray-700"></span>
-							<span class="text-primary">{post.data.category}</span>
-						</>
-					)}
-					{post.data.tags && post.data.tags.length > 0 && (
-						<>
-							<span class="w-px h-3 bg-gray-300 dark:bg-gray-700"></span>
-							<div class="flex gap-2">
-								{post.data.tags.map(tag => (
-									<a href={`/tags/${tag}`} class="hover:text-primary transition-colors">#{tag}</a>
-								))}
-							</div>
-						</>
-					)}
-				</div>
-				<h2 class="text-3xl font-serif font-bold leading-tight text-text-light dark:text-text-dark group-hover:text-primary transition-colors duration-200">
-					<a href={`/posts/${post.slug}/`}>
-						<span class="absolute inset-0"></span>
-						{post.data.title}
-					</a>
-				</h2>
-				<p class="text-base text-text-muted-light dark:text-text-muted-dark leading-relaxed line-clamp-3">
-					{post.data.description}
-				</p>
-				<div class="text-sm font-medium text-text-light dark:text-text-dark underline decoration-gray-300 dark:decoration-gray-700 underline-offset-4 group-hover:decoration-primary transition-all">
-					阅读全文 &rarr;
-				</div>
-			</article>
-		))}
+	<!-- Hero Section -->
+	<section class="py-20 md:py-32">
+		<h1 class="font-serif text-5xl md:text-7xl font-bold mb-8 text-text-light dark:text-text-dark tracking-tight leading-none">
+			Rational <br/> <span class="text-primary/90">Elegance.</span>
+		</h1>
+		<p class="text-xl md:text-2xl text-text-muted-light dark:text-text-muted-dark max-w-2xl leading-relaxed italic font-serif">
+			探索技术与人文的交汇点。<br/>
+			记录思考，分享创造。
+		</p>
+	</section>
+
+	<hr class="border-black/5 dark:border-white/10 mb-16" />
+
+	<!-- Latest Posts -->
+	<section>
+		<div class="flex items-center justify-between mb-12">
+			<h2 class="font-serif text-2xl font-bold text-text-light dark:text-text-dark">Latest Writing</h2>
+			<a href="/blog" class="group flex items-center gap-1 text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-primary transition-colors">
+				View all 
+				<span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+			</a>
+		</div>
+		
+		<div class="flex flex-col gap-16">
+			{posts.slice(0, 5).map((post) => (
+				<article class="group relative grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 items-baseline">
+					<div class="md:col-span-1 text-sm font-medium text-text-muted-light dark:text-text-muted-dark font-sans">
+						<time datetime={post.data.pubDate.toISOString()}>
+							{post.data.pubDate.toLocaleDateString('zh-CN', {
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric',
+							})}
+						</time>
+					</div>
+					
+					<div class="md:col-span-3 flex flex-col space-y-3">
+						<h2 class="text-2xl font-serif font-bold leading-tight text-text-light dark:text-text-dark group-hover:text-primary transition-colors duration-200">
+							<a href={`/posts/${post.slug}/`}>
+								<span class="absolute inset-0"></span>
+								{post.data.title}
+							</a>
+						</h2>
+						<p class="text-base text-text-muted-light dark:text-text-muted-dark leading-relaxed line-clamp-2">
+							{post.data.description}
+						</p>
+						<div class="flex items-center gap-3 text-xs font-medium uppercase tracking-widest text-text-muted-light dark:text-text-muted-dark pt-2">
+							{post.data.category && (
+								<span class="text-primary">{post.data.category}</span>
+							)}
+							{post.data.tags && post.data.tags.length > 0 && (
+								<>
+									<span>&bull;</span>
+									<div class="flex gap-2">
+										{post.data.tags.slice(0, 3).map(tag => (
+											<span class="hover:text-text-light dark:hover:text-text-dark transition-colors">#{tag}</span>
+										))}
+									</div>
+								</>
+							)}
+						</div>
+					</div>
+				</article>
+			))}
+		</div>
 	</section>
 </Layout>

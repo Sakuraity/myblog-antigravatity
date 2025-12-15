@@ -24,41 +24,79 @@
 </script>
 
 <style is:global>
-    /* Minimalist styling for Pagefind to match "Rational Elegance" */
+    /* Refined Minimalist Search */
     #search {
-        --pagefind-ui-scale: 0.8;
+        --pagefind-ui-scale: 0.75;
         --pagefind-ui-primary: #d00000;
         --pagefind-ui-text: #1a1a1a;
-        --pagefind-ui-background: #FDFBF9;
-        --pagefind-ui-border: #e5e7eb;
-        --pagefind-ui-tag: #e5e7eb;
-        --pagefind-ui-border-width: 1px;
-        --pagefind-ui-border-radius: 4px;
-        --pagefind-ui-image-border-radius: 4px;
-        --pagefind-ui-image-box-ratio: 3 / 2;
+        --pagefind-ui-background: #ffffff;
+        --pagefind-ui-border: transparent; /* Remove border for cleaner look */
+        --pagefind-ui-tag: #f3f4f6;
+        --pagefind-ui-border-width: 0px;
+        --pagefind-ui-border-radius: 9999px; /* Full pill shape */
         --pagefind-ui-font: "Inter", sans-serif;
     }
     
     html.dark #search {
         --pagefind-ui-text: #EDEDED;
-        --pagefind-ui-background: #131316;
-        --pagefind-ui-border: #333;
-        --pagefind-ui-tag: #333;
+        --pagefind-ui-background: #1E1E21;
+        --pagefind-ui-tag: #2A2A2E;
     }
     
+    /* Input Styling - Glassy Pill */
     .pagefind-ui__search-input {
-        background-color: transparent !important;
-        border: 1px solid var(--pagefind-ui-border) !important;
-        transition: border-color 0.2s;
+        background-color: rgba(0, 0, 0, 0.03) !important;
+        border: 1px solid transparent !important;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        padding-left: 2.5rem !important; /* Space for icon */
+        font-size: 0.85rem !important;
+        border-radius: 9999px !important;
+    }
+    
+    html.dark .pagefind-ui__search-input {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    .pagefind-ui__search-input:hover {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+    html.dark .pagefind-ui__search-input:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
     }
     
     .pagefind-ui__search-input:focus {
-        border-color: var(--pagefind-ui-primary) !important;
+        background-color: #fff !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05), 0 0 0 2px rgba(208, 0, 0, 0.1) !important;
         outline: none;
+    }
+    html.dark .pagefind-ui__search-input:focus {
+        background-color: #1a1a1a !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(208, 0, 0, 0.3) !important;
+    }
+
+    /* Result Panel */
+    .pagefind-ui__drawer {
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(0,0,0,0.05) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1) !important;
+        margin-top: 12px !important;
+        padding: 1rem !important;
+    }
+    html.dark .pagefind-ui__drawer {
+        background-color: rgba(30, 30, 33, 0.95) !important;
+        border: 1px solid rgba(255,255,255,0.05) !important;
+        box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3) !important;
     }
     
     .pagefind-ui__result-thumb {
-        display: none !important; /* Force hide thumbs */
+        display: none !important; 
+    }
+    
+    /* Search Icon alignment fix */
+    .pagefind-ui__search-clear {
+        top: 12px !important;
     }
 </style>
 <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
