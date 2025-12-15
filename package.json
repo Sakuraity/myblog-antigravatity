@@ -5,10 +5,11 @@
     "scripts": {
         "dev": "astro dev",
         "start": "astro dev",
-        "build": "astro build",
+        "build": "astro check && astro build",
         "postbuild": "pagefind --site dist",
         "preview": "astro preview",
-        "astro": "astro"
+        "astro": "astro",
+        "import:content": "node scripts/import_youmind.mjs"
     },
     "dependencies": {
         "@astrojs/rss": "^4.0.14",
