@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout title="纽约客风格">
+	<section class="post-list">
+		{posts.map((post) => (
+			<article class="post-preview">
+				<div class="meta">
+					<time datetime={post.data.pubDate.toISOString()}>
+						{post.data.pubDate.toLocaleDateString('zh-CN', {
+							year: 'numeric',
+							month: 'long',
+							day: 'numeric',
+						})}
+					</time>
+					<span class="separator">&mdash;</span>
+					<span class="category">随笔</span>
+				</div>
+				<h2 class="title">
+					<a href={`/posts/${post.slug}/`}>{post.data.title}</a>
+				</h2>
+				<p class="description">{post.data.description}</p>
+				<div class="read-more">
+					<a href={`/posts/${post.slug}/`}>阅读全文 &rarr;</a>
+				</div>
+			</article>
+		))}
+	</section>
+</Layout>
+
+<style>
+	.post-list {
+		display: flex;
+		flex-direction: column;
+		gap: 4rem;
+		max-width: 700px;
+		margin: 0 auto;
+	}
+	.post-preview {
+		text-align: center;
+	}
+	.meta {
+		font-family: var(--font-display);
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: #d00; /* New Yorker red accent */
+		margin-bottom: 0.5rem;
+	}
+	.title {
+		font-size: 2rem;
+		margin-top: 0.5rem;
+		margin-bottom: 1rem;
+	}
+	.description {
+		font-size: 1.1rem;
+		color: #444;
+	}
+	.read-more {
+		margin-top: 1rem;
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: 0.95rem;
+	}
+</style>

@@ -1,0 +1,101 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('posts');
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: post,
+	}));
+}
+
+const post = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+	<article class="post-content">
+		<header class="post-header">
+			<div class="meta">
+				<time datetime={post.data.pubDate.toISOString()}>
+					{post.data.pubDate.toLocaleDateString('zh-CN', {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+					})}
+				</time>
+			</div>
+			<h1 class="title">{post.data.title}</h1>
+			<p class="subtitle">{post.data.description}</p>
+		</header>
+		<div class="content icon-drop-cap">
+			<Content />
+		</div>
+	</article>
+</Layout>
+
+<style>
+	.post-content {
+		max-width: 680px; /* Optimal reading width */
+		margin: 0 auto;
+	}
+	.post-header {
+		text-align: center;
+		margin-bottom: 3rem;
+		border-bottom: 1px solid #eee;
+		padding-bottom: 2rem;
+	}
+	.meta {
+		font-family: var(--font-display);
+		font-size: 0.9rem;
+		color: #888;
+		margin-bottom: 1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+	.title {
+		font-size: 3rem;
+		margin-bottom: 0.5rem;
+	}
+	.subtitle {
+		font-size: 1.3rem;
+		font-style: italic;
+		color: #555;
+		margin-top: 0;
+	}
+	
+	/* Typography for content */
+	.content {
+		font-family: var(--font-serif);
+		font-size: 1.15rem; /* Larger comfortable reading size */
+		text-align: justify; /* Newspaper feel */
+	}
+	
+	.content :global(p) {
+		margin-bottom: 1.5rem;
+		text-indent: 2rem; /* Classic paragraph indent */
+	}
+	.content :global(p:first-of-type) {
+		text-indent: 0;
+	}
+	
+	/* Drop cap effect */
+	.content :global(p:first-of-type::first-letter) {
+		float: left;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 4.5rem;
+		line-height: 0.85;
+		margin-right: 0.75rem;
+		margin-top: 0.25rem;
+		color: #d00;
+	}
+
+	.content :global(h2) {
+		font-size: 1.8rem;
+		margin-top: 3rem;
+		text-align: center;
+		font-style: italic;
+	}
+</style>
