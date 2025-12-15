@@ -48,7 +48,7 @@ function createFrontmatter(title, dateStr) {
     let cleanTitle = title;
 
     return `---
-title: "${cleanTitle}"
+title: "${cleanTitle.replace(/"/g, '\\"')}"
 description: "${cleanTitle.slice(0, 100).replace(/"/g, '\\"')}"
 pubDate: "${pubDate}"
 category: "Imported"
