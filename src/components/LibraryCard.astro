@@ -1,0 +1,178 @@
+---
+// LibraryCard.astro - Library 内容卡片组件
+import SpotifyEmbed from './SpotifyEmbed.astro';
+
+interface Props {
+    type: 'music' | 'video' | 'book';
+    title: string;
+    // Music
+    artist?: string;
+    spotifyUrl?: string;
+    // Video
+    source?: 'youtube' | 'bilibili';
+    videoId?: string;
+    // Book
+    author?: string;
+    status?: 'reading' | 'finished' | 'wishlist';
+    rating?: number;
+    // Common
+    link?: string;
+    comment?: string;
+    date: Date;
+    coverImage?: { src: string } | string;
+}
+
+const { type, title, artist, spotifyUrl, source, videoId, author, status, rating, link, comment, date, coverImage } = Astro.props;
+
+const coverImgSrc = typeof coverImage === 'string' ? coverImage : coverImage?.src;
+
+const typeIcons = {
+    music: '🎵',
+    video: '🎬',
+    book: '📚'
+};
+
+const typeLabels = {
+    music: 'Music',
+    video: 'Video', 
+    book: 'Book'
+};
+
+const statusLabels = {
+    reading: 'Reading',
+    finished: 'Finished',
+    wishlist: 'Wishlist'
+};
+
+// Generate video thumbnail URL
+const getVideoThumbnail = () => {
+    if (source === 'youtube' && videoId) {
+        return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+    }
+    return null;
+};
+
+const videoThumbnail = getVideoThumbnail();
+---
+
+<article class="group relative flex flex-col bg-gray-50 dark:bg-white/5 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+    <!-- Type Badge (only for non-music with Spotify) -->
+    {!(type === 'music') && (
+        <div class="absolute top-3 left-3 z-10">
+            <span class="px-2 py-1 text-xs font-medium bg-white/90 dark:bg-black/50 backdrop-blur-sm rounded-full">
+                {typeIcons[type]} {typeLabels[type]}
+            </span>
+        </div>
+    )}
+    
+    <!-- Thumbnail / Cover / Spotify Embed -->
+    {type === 'music' ? (
+        <div class="flex flex-col relative overflow-hidden h-full">
+            {coverImgSrc ? (
+                 <div class="aspect-square w-full relative">
+                    <img 
+                        src={coverImgSrc} 
+                        alt={title} 
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                    />
+                    {/* Gradient Overlay for better text/player visibility */}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                 </div>
+            ) : (
+                <div class="aspect-square w-full bg-gradient-to-br from-gray-800 to-black flex items-center justify-center">
+                    <span class="text-6xl animate-pulse">🎵</span>
+                </div>
+            )}
+            
+            {spotifyUrl && (
+                <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out z-20">
+                    <div class="shadow-xl rounded-xl overflow-hidden bg-white dark:bg-black/90 backdrop-blur-sm">
+                        <SpotifyEmbed url={spotifyUrl} compact={true} />
+                    </div>
+                </div>
+            )}
+        </div>
+    ) : type === 'video' && videoThumbnail ? (
+        <div class="aspect-video bg-gray-100 dark:bg-white/10 overflow-hidden">
+            <img src={videoThumbnail} alt={title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+        </div>
+    ) : (
+        <div class="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 dark:from-white/10 dark:to-white/5 flex items-center justify-center">
+            <span class="text-4xl opacity-30">{typeIcons[type]}</span>
+        </div>
+    )}
+    
+    <div class="p-5 flex flex-col flex-grow">
+        <h3 class="text-lg font-serif font-bold mb-1 text-text-light dark:text-text-dark group-hover:text-primary transition-colors line-clamp-1">
+            {title}
+        </h3>
+        
+        {/* Music: Artist */}
+        {type === 'music' && artist && (
+            <p class="text-sm text-text-muted-light dark:text-text-muted-dark mb-2">{artist}</p>
+        )}
+        
+        {/* Book: Author & Status */}
+        {type === 'book' && (
+            <div class="flex items-center gap-2 mb-2">
+                {author && <p class="text-sm text-text-muted-light dark:text-text-muted-dark">{author}</p>}
+                {status && (
+                    <span class={`text-xs px-2 py-0.5 rounded-full ${
+                        status === 'finished' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
+                        status === 'reading' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
+                        'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                    }`}>
+                        {statusLabels[status]}
+                    </span>
+                )}
+            </div>
+        )}
+        
+        {/* Rating */}
+        {rating && (
+            <div class="flex items-center gap-1 mb-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                    <span class={`text-sm ${i < rating ? 'text-yellow-500' : 'text-gray-300 dark:text-gray-600'}`}>★</span>
+                ))}
+            </div>
+        )}
+        
+        {/* Comment */}
+        {comment && (
+            <p class="text-sm text-text-muted-light dark:text-text-muted-dark line-clamp-2 italic mb-3">
+                "{comment}"
+            </p>
+        )}
+        
+        {/* Date */}
+        <p class="text-xs text-text-muted-light dark:text-text-muted-dark mt-auto">
+            {date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })}
+        </p>
+        
+        {/* Links */}
+        <div class="flex items-center gap-3 mt-3">
+            {spotifyUrl && (
+                <a href={spotifyUrl} target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-green-600 hover:underline">
+                    Spotify →
+                </a>
+            )}
+            {type === 'video' && source === 'youtube' && videoId && (
+                <a href={`https://youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-red-600 hover:underline">
+                    YouTube →
+                </a>
+            )}
+            {type === 'video' && source === 'bilibili' && videoId && (
+                <a href={`https://bilibili.com/video/${videoId}`} target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-pink-500 hover:underline">
+                    Bilibili →
+                </a>
+            )}
+            {link && (
+                <a href={link} target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-primary hover:underline">
+                    Link →
+                </a>
+            )}
+        </div>
+    </div>
+</article>

@@ -1,0 +1,52 @@
+---
+// NoteCard.astro - 闪念笔记卡片组件
+interface Props {
+    content: string;
+    date: Date;
+    tags?: string[];
+}
+
+const { content, date, tags } = Astro.props;
+
+// Format date with time
+const formattedDate = date.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+});
+
+const formattedTime = date.toLocaleTimeString('zh-CN', {
+    hour: '2-digit',
+    minute: '2-digit',
+});
+---
+
+<article class="relative pl-6 pb-8 border-l-2 border-gray-200 dark:border-gray-700 last:pb-0">
+    <!-- Timeline dot -->
+    <div class="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-primary"></div>
+    
+    <div class="group">
+        <!-- Date & Time -->
+        <div class="flex items-center gap-3 mb-2">
+            <time class="text-sm font-medium text-text-muted-light dark:text-text-muted-dark">
+                {formattedDate}
+                <span class="text-xs opacity-60 ml-1">{formattedTime}</span>
+            </time>
+            
+            {tags && tags.length > 0 && (
+                <div class="flex gap-1.5">
+                    {tags.map(tag => (
+                        <span class="text-xs px-2 py-0.5 bg-gray-100 dark:bg-white/10 rounded-full text-text-muted-light dark:text-text-muted-dark">
+                            #{tag}
+                        </span>
+                    ))}
+                </div>
+            )}
+        </div>
+        
+        <!-- Content -->
+        <div class="prose prose-sm dark:prose-invert max-w-none text-text-light dark:text-text-dark">
+            <Fragment set:html={content} />
+        </div>
+    </div>
+</article>

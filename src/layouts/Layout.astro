@@ -56,23 +56,31 @@ const { title } = Astro.props;
 				<!-- Center: Nav -->
 				<div class="col-span-6 flex justify-center">
 					<nav class="flex items-center gap-8 text-sm font-medium text-text-muted-light dark:text-text-muted-dark">
-						<a href="/" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
-							首页
-							<span class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
-						</a>
-						<a href="/about" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
-							关于我
-							<span class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
-						</a>
-						<a href="/works" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
-							作品
-							<span class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
-						</a>
-						<a href="/blog" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
-							博客
-							<span class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
-						</a>
-					</nav>
+					<a href="/" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
+						Home
+						<span class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
+					</a>
+					<a href="/works" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
+						Works
+						<span class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
+					</a>
+					<a href="/library" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
+						Library
+						<span class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
+					</a>
+					<a href="/blog" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
+						Blog
+						<span class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
+					</a>
+					<a href="/notes" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
+						Notes
+						<span class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
+					</a>
+					<a href="/about" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
+						About
+						<span class="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all group-hover:w-full"></span>
+					</a>
+				</nav>
 				</div>
 				
 				<!-- Right: Search & Theme -->
@@ -90,7 +98,7 @@ const { title } = Astro.props;
 			</div>
 		</header>
 
-		<main class="flex-grow w-full max-w-2xl mx-auto px-6 py-12">
+		<main class="flex-grow w-full max-w-6xl mx-auto px-6 py-12">
 			<slot />
 		</main>
 

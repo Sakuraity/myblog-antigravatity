@@ -1,0 +1,66 @@
+---
+// SpotifyEmbed.astro - Spotify 嵌入播放器组件
+interface Props {
+    url: string;
+    compact?: boolean;  // 紧凑模式显示较小的播放器
+}
+
+const { url, compact = false } = Astro.props;
+
+// 从 Spotify URL 提取 track/album/playlist ID
+// 支持格式: 
+// - https://open.spotify.com/track/xxx
+// - https://open.spotify.com/intl-ja/track/xxx
+// - https://open.spotify.com/embed/track/xxx
+function getEmbedUrl(spotifyUrl: string): string {
+    try {
+        const urlObj = new URL(spotifyUrl);
+        
+        // 如果已经是 embed URL，直接返回
+        if (urlObj.pathname.startsWith('/embed')) {
+            return spotifyUrl;
+        }
+
+        const pathParts = urlObj.pathname.split('/').filter(Boolean);
+        // 查找类型 (track, album, playlist, artist, episode, show)
+        const typeIndex = pathParts.findIndex(part => 
+            ['track', 'album', 'playlist', 'artist', 'episode', 'show'].includes(part)
+        );
+
+        if (typeIndex !== -1 && pathParts[typeIndex + 1]) {
+            const type = pathParts[typeIndex];
+            const id = pathParts[typeIndex + 1];
+            return `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
+        }
+    } catch (e) {
+        console.warn('Invalid Spotify URL:', spotifyUrl);
+    }
+    return spotifyUrl;
+}
+
+const embedUrl = getEmbedUrl(url);
+const height = compact ? 152 : 352;
+---
+
+<div class="spotify-embed rounded-xl overflow-hidden">
+    <iframe 
+        src={embedUrl}
+        width="100%" 
+        height={height}
+        frameBorder="0" 
+        allowfullscreen
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+        loading="lazy"
+        class="rounded-xl"
+    ></iframe>
+</div>
+
+<style>
+    .spotify-embed {
+        background: linear-gradient(135deg, #1DB954 0%, #191414 100%);
+        padding: 2px;
+    }
+    .spotify-embed iframe {
+        display: block;
+    }
+</style>

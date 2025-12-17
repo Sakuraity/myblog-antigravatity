@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NoteCard from '../components/NoteCard.astro';
+import { getCollection } from 'astro:content';
+
+const notes = (await getCollection('notes')).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// Render markdown content for each note
+const notesWithContent = await Promise.all(
+    notes.map(async (note) => {
+        const { Content } = await note.render();
+        return { note, Content };
+    })
+);
+---
+
+<Layout title="Notes | Kangyuan's Blog">
+    <div class="max-w-2xl mx-auto py-12">
+        <header class="text-center mb-16">
+            <h1 class="font-serif text-4xl font-bold mb-4">Notes</h1>
+            <p class="text-xl text-text-muted-light dark:text-text-muted-dark italic font-serif">
+                一些临时的想法和闪念记录。
+            </p>
+        </header>
+        
+        <!-- Timeline -->
+        <div class="relative">
+            {notesWithContent.map(async ({ note, Content }) => {
+                // Get raw HTML from Content component
+                const rawContent = await Astro.slots.render('default');
+                return (
+                    <NoteCard 
+                        content={note.body}
+                        date={note.data.date}
+                        tags={note.data.tags}
+                    />
+                );
+            })}
+        </div>
+        
+        {notes.length === 0 && (
+            <div class="text-center py-20 text-text-muted-light dark:text-text-muted-dark">
+                <p class="text-lg">暂无笔记</p>
+                <p class="text-sm mt-2">开始记录你的想法吧！</p>
+            </div>
+        )}
+    </div>
+</Layout>

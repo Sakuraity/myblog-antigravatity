@@ -1,22 +1,69 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import WorkCard from '../components/WorkCard.astro';
+import { getCollection } from 'astro:content';
+
+const works = (await getCollection('works')).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// Separate featured and regular works
+const featuredWorks = works.filter(w => w.data.featured);
+const regularWorks = works.filter(w => !w.data.featured);
 ---
 
-<Layout title="作品 | Kangyuan's Blog">
-	<div class="max-w-4xl mx-auto py-12 text-center">
-		<h1 class="font-serif text-4xl font-bold mb-8">Works</h1>
-		<p class="text-text-muted-light dark:text-text-muted-dark mb-12">
-			这里展示我的一些个人项目和摄影作品。
-		</p>
-		
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-			{/* Placeholder Items */}
-			<div class="aspect-video bg-gray-100 dark:bg-white/5 rounded-lg flex items-center justify-center text-text-muted-light dark:text-text-muted-dark">
-				Coming Soon
-			</div>
-			<div class="aspect-video bg-gray-100 dark:bg-white/5 rounded-lg flex items-center justify-center text-text-muted-light dark:text-text-muted-dark">
-				Coming Soon
-			</div>
-		</div>
-	</div>
+<Layout title="Works | Kangyuan's Blog">
+    <div class="max-w-5xl mx-auto py-12">
+        <header class="text-center mb-12">
+            <h1 class="font-serif text-4xl font-bold mb-4">Works</h1>
+            <p class="text-xl text-text-muted-light dark:text-text-muted-dark italic font-serif">
+                我做的一些产品和项目。
+            </p>
+        </header>
+        
+        {/* Featured Works */}
+        {featuredWorks.length > 0 && (
+            <section class="mb-16">
+                <h2 class="text-lg font-medium text-text-muted-light dark:text-text-muted-dark uppercase tracking-widest mb-6">Featured</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {featuredWorks.map(work => (
+                        <WorkCard 
+                            title={work.data.title}
+                            description={work.data.description}
+                            link={work.data.link}
+                            tags={work.data.tags}
+                            featured={work.data.featured}
+                            slug={work.slug}
+                        />
+                    ))}
+                </div>
+            </section>
+        )}
+        
+        {/* All Works */}
+        <section>
+            {featuredWorks.length > 0 && (
+                <h2 class="text-lg font-medium text-text-muted-light dark:text-text-muted-dark uppercase tracking-widest mb-6">All Projects</h2>
+            )}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {regularWorks.map(work => (
+                    <WorkCard 
+                        title={work.data.title}
+                        description={work.data.description}
+                        link={work.data.link}
+                        tags={work.data.tags}
+                        featured={work.data.featured}
+                        slug={work.slug}
+                    />
+                ))}
+            </div>
+        </section>
+        
+        {works.length === 0 && (
+            <div class="text-center py-20 text-text-muted-light dark:text-text-muted-dark">
+                <p class="text-lg">暂无作品</p>
+                <p class="text-sm mt-2">即将上线...</p>
+            </div>
+        )}
+    </div>
 </Layout>

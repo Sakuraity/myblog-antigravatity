@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LibraryCard from '../components/LibraryCard.astro';
+import { getCollection } from 'astro:content';
+
+const allItems = (await getCollection('library')).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// Get unique types for tabs
+const types = ['all', 'music', 'video', 'book'] as const;
+---
+
+<Layout title="Library | Kangyuan's Blog">
+    <div class="max-w-5xl mx-auto py-12">
+        <header class="text-center mb-12">
+            <h1 class="font-serif text-4xl font-bold mb-4">Library</h1>
+            <p class="text-xl text-text-muted-light dark:text-text-muted-dark italic font-serif">
+                音乐、视频、图书，我正在消费的内容。
+            </p>
+        </header>
+        
+        <!-- Filter Tabs -->
+        <div class="flex justify-center gap-2 mb-12" id="filter-tabs">
+            {types.map(type => (
+                <button 
+                    data-filter={type}
+                    class={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+                        type === 'all' 
+                            ? 'bg-primary text-white' 
+                            : 'bg-gray-100 dark:bg-white/10 text-text-muted-light dark:text-text-muted-dark hover:bg-gray-200 dark:hover:bg-white/20'
+                    }`}
+                >
+                    {type === 'all' ? 'All' : type.charAt(0).toUpperCase() + type.slice(1)}
+                </button>
+            ))}
+        </div>
+        
+        <!-- Items Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="library-grid">
+            {allItems.map(item => (
+                <div data-type={item.data.type}>
+                    <LibraryCard 
+                        type={item.data.type}
+                        title={item.data.title}
+                        artist={item.data.artist}
+                        spotifyUrl={item.data.spotifyUrl}
+                        source={item.data.source}
+                        videoId={item.data.videoId}
+                        author={item.data.author}
+                        status={item.data.status}
+                        rating={item.data.rating}
+                        coverImage={item.data.coverImage}
+                        link={item.data.link}
+                        comment={item.data.comment}
+                        date={item.data.date}
+                    />
+                </div>
+            ))}
+        </div>
+        
+        {allItems.length === 0 && (
+            <div class="text-center py-20 text-text-muted-light dark:text-text-muted-dark">
+                <p class="text-lg">暂无内容</p>
+                <p class="text-sm mt-2">开始添加你喜欢的音乐、视频和图书吧！</p>
+            </div>
+        )}
+    </div>
+</Layout>
+
+<script>
+    document.addEventListener('astro:page-load', () => {
+        const tabs = document.querySelectorAll('#filter-tabs button');
+        const items = document.querySelectorAll('#library-grid > div');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const filter = tab.getAttribute('data-filter');
+                
+                // Update active tab
+                tabs.forEach(t => {
+                    t.classList.remove('bg-primary', 'text-white');
+                    t.classList.add('bg-gray-100', 'dark:bg-white/10', 'text-text-muted-light', 'dark:text-text-muted-dark');
+                });
+                tab.classList.add('bg-primary', 'text-white');
+                tab.classList.remove('bg-gray-100', 'dark:bg-white/10', 'text-text-muted-light', 'dark:text-text-muted-dark');
+                
+                // Filter items
+                items.forEach(item => {
+                    const type = item.getAttribute('data-type');
+                    if (filter === 'all' || type === filter) {
+                        (item as HTMLElement).style.display = 'block';
+                    } else {
+                        (item as HTMLElement).style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>

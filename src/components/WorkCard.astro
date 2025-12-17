@@ -1,0 +1,57 @@
+---
+// WorkCard.astro - 作品展示卡片组件
+interface Props {
+    title: string;
+    description: string;
+    link?: string;
+    tags?: string[];
+    featured?: boolean;
+    slug: string;
+}
+
+const { title, description, link, tags, featured, slug } = Astro.props;
+---
+
+<article class="group relative flex flex-col bg-gray-50 dark:bg-white/5 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+    {featured && (
+        <div class="absolute top-3 right-3 z-10">
+            <span class="px-2 py-1 text-xs font-medium bg-primary text-white rounded-full">Featured</span>
+        </div>
+    )}
+    
+    <div class="aspect-video bg-gray-100 dark:bg-white/10 flex items-center justify-center">
+        <span class="text-4xl opacity-20">🚀</span>
+    </div>
+    
+    <div class="p-6 flex flex-col flex-grow">
+        <h3 class="text-xl font-serif font-bold mb-2 text-text-light dark:text-text-dark group-hover:text-primary transition-colors">
+            {title}
+        </h3>
+        <p class="text-sm text-text-muted-light dark:text-text-muted-dark line-clamp-2 mb-4 flex-grow">
+            {description}
+        </p>
+        
+        {tags && tags.length > 0 && (
+            <div class="flex flex-wrap gap-2 mb-4">
+                {tags.map(tag => (
+                    <span class="text-xs px-2 py-1 bg-gray-100 dark:bg-white/10 rounded-full text-text-muted-light dark:text-text-muted-dark">
+                        {tag}
+                    </span>
+                ))}
+            </div>
+        )}
+        
+        <div class="flex items-center gap-3">
+            {link && (
+                <a 
+                    href={link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="text-sm font-medium text-primary hover:underline"
+                >
+                    Visit →
+                </a>
+            )}
+        </div>
+    </div>
+</article>

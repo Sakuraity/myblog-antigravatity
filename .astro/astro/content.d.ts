@@ -140,62 +140,103 @@ declare module 'astro:content' {
 	>;
 
 	type ContentEntryMap = {
-		"posts": {
-"sample-post.md": {
-	id: "sample-post.md";
-  slug: "sample-post";
+		"library": {
+"example-book.md": {
+	id: "example-book.md";
+  slug: "example-book";
+  body: string;
+  collection: "library";
+  data: InferEntrySchema<"library">
+} & { render(): Render[".md"] };
+"example-video.md": {
+	id: "example-video.md";
+  slug: "example-video";
+  body: string;
+  collection: "library";
+  data: InferEntrySchema<"library">
+} & { render(): Render[".md"] };
+"hao-zao-gao-de-pai-dui.md": {
+	id: "hao-zao-gao-de-pai-dui.md";
+  slug: "hao-zao-gao-de-pai-dui";
+  body: string;
+  collection: "library";
+  data: InferEntrySchema<"library">
+} & { render(): Render[".md"] };
+"seven-jungkook.md": {
+	id: "seven-jungkook.md";
+  slug: "seven-jungkook";
+  body: string;
+  collection: "library";
+  data: InferEntrySchema<"library">
+} & { render(): Render[".md"] };
+};
+"notes": {
+"2024-01-15-first-note.md": {
+	id: "2024-01-15-first-note.md";
+  slug: "2024-01-15-first-note";
+  body: string;
+  collection: "notes";
+  data: InferEntrySchema<"notes">
+} & { render(): Render[".md"] };
+};
+"posts": {
+"为什么是诺基亚/index.md": {
+	id: "为什么是诺基亚/index.md";
+  slug: "为什么是诺基亚";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".md"] };
-"test-post-title/index.md": {
-	id: "test-post-title/index.md";
-  slug: "test-post-title";
+"商业化策略的“五看”/index.md": {
+	id: "商业化策略的“五看”/index.md";
+  slug: "商业化策略的五看";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".md"] };
-"一个-笨-机器人的智慧/index.md": {
-	id: "一个-笨-机器人的智慧/index.md";
-  slug: "一个-笨-机器人的智慧";
+"复杂的情绪，好奇与谦逊，门缝与屋子/index.md": {
+	id: "复杂的情绪，好奇与谦逊，门缝与屋子/index.md";
+  slug: "复杂的情绪好奇与谦逊门缝与屋子";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".md"] };
-"一些和gpt-对话后的记录-碎碎念/index.md": {
-	id: "一些和gpt-对话后的记录-碎碎念/index.md";
-  slug: "一些和gpt-对话后的记录-碎碎念";
+"效率、转换、兴趣/index.md": {
+	id: "效率、转换、兴趣/index.md";
+  slug: "效率转换兴趣";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".md"] };
-"为什么是现在-netflix-的增长困境/index.md": {
-	id: "为什么是现在-netflix-的增长困境/index.md";
-  slug: "为什么是现在-netflix-的增长困境";
+"智能简史1：不要试图一开始就构建完美的系统/index.md": {
+	id: "智能简史1：不要试图一开始就构建完美的系统/index.md";
+  slug: "智能简史1不要试图一开始就构建完美的系统";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".md"] };
-"思考-商业化增长策略的-五看/index.md": {
-	id: "思考-商业化增长策略的-五看/index.md";
-  slug: "思考-商业化增长策略的-五看";
+"精英叙事的紧绷，而我只想松弛/index.md": {
+	id: "精英叙事的紧绷，而我只想松弛/index.md";
+  slug: "精英叙事的紧绷而我只想松弛";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".md"] };
-"效率-是一种-主旋律/index.md": {
-	id: "效率-是一种-主旋律/index.md";
-  slug: "效率-是一种-主旋律";
+"网飞为什么收购华纳/index.md": {
+	id: "网飞为什么收购华纳/index.md";
+  slug: "网飞为什么收购华纳";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".md"] };
-"精英叙事的紧绷/index.md": {
-	id: "精英叙事的紧绷/index.md";
-  slug: "精英叙事的紧绷";
+};
+"works": {
+"example-project.md": {
+	id: "example-project.md";
+  slug: "example-project";
   body: string;
-  collection: "posts";
-  data: InferEntrySchema<"posts">
+  collection: "works";
+  data: InferEntrySchema<"works">
 } & { render(): Render[".md"] };
 };
 
