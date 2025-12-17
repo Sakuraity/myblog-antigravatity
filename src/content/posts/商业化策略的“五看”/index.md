@@ -1,5 +1,5 @@
 ---
-title: "1. 看市场：洞察内外部行业趋势"
+title: "商业化策略的“五看”"
 description: "1. 看市场：洞察内外部行业趋势"
 pubDate: "2025-12-15"
 category: "Imported"

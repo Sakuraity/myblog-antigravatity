@@ -1,5 +1,5 @@
 ---
-title: "**一个\"笨\"机器人的智慧**"
+title: "智能简史#1：不要试图一开始就构建完美的系统"
 description: "**一个\"笨\"机器人的智慧**"
 pubDate: "2025-12-15"
 category: "Imported"

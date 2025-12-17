@@ -1,5 +1,5 @@
 ---
-title: "效率，是一种“主旋律”。"
+title: "效率、转换、兴趣"
 description: "效率，是一种“主旋律”。"
 pubDate: "2025-12-15"
 category: "Imported"

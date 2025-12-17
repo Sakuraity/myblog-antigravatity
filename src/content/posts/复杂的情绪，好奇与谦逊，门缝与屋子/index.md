@@ -1,5 +1,5 @@
 ---
-title: "一些和gpt 对话后的记录，碎碎念"
+title: "复杂的情绪，好奇与谦逊，门缝与屋子"
 description: "一些和gpt 对话后的记录，碎碎念"
 pubDate: "2025-12-15"
 category: "Imported"

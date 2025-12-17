@@ -1,5 +1,5 @@
 ---
-title: "为什么是现在？——Netflix 的增长困境"
+title: "网飞为什么收购华纳"
 description: "为什么是现在？——Netflix 的增长困境"
 pubDate: "2025-12-15"
 category: "Imported"
