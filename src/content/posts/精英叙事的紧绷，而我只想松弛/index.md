@@ -1,6 +1,6 @@
 ---
 title: "精英叙事的紧绷，而我只想松弛"
-description: "精英叙事的紧绷"
+description: "精英叙事的紧绷，而我只想松弛"
 pubDate: "2025-12-15"
 category: "Imported"
 tags: ["Youmind"]

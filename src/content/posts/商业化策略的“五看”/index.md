@@ -1,6 +1,6 @@
 ---
 title: "商业化策略的“五看”"
-description: "1. 看市场：洞察内外部行业趋势"
+description: "商业化策略的“五看”"
 pubDate: "2025-12-15"
 category: "Imported"
 tags: ["Youmind"]
