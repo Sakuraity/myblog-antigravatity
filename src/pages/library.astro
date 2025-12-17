@@ -69,8 +69,13 @@ const types = ['all', 'music', 'video', 'book'] as const;
 </Layout>
 
 <script>
-    document.addEventListener('astro:page-load', () => {
-        const tabs = document.querySelectorAll('#filter-tabs button');
+    function initLibraryTabs() {
+        const tabsContainer = document.getElementById('filter-tabs');
+        // 防止重复初始化
+        if (!tabsContainer || tabsContainer.dataset.initialized) return;
+        tabsContainer.dataset.initialized = 'true';
+        
+        const tabs = tabsContainer.querySelectorAll('button');
         const items = document.querySelectorAll('#library-grid > div');
         
         tabs.forEach(tab => {
@@ -96,5 +101,7 @@ const types = ['all', 'music', 'video', 'book'] as const;
                 });
             });
         });
-    });
+    }
+    
+    document.addEventListener('astro:page-load', initLibraryTabs);
 </script>

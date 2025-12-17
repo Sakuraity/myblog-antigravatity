@@ -27,17 +27,13 @@ const notesWithContent = await Promise.all(
         
         <!-- Timeline -->
         <div class="relative">
-            {notesWithContent.map(async ({ note, Content }) => {
-                // Get raw HTML from Content component
-                const rawContent = await Astro.slots.render('default');
-                return (
-                    <NoteCard 
-                        content={note.body}
-                        date={note.data.date}
-                        tags={note.data.tags}
-                    />
-                );
-            })}
+            {notesWithContent.map(({ note }) => (
+                <NoteCard 
+                    content={note.body}
+                    date={note.data.date}
+                    tags={note.data.tags}
+                />
+            ))}
         </div>
         
         {notes.length === 0 && (
