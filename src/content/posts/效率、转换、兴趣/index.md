@@ -1,6 +1,6 @@
 ---
 title: "效率、转换、兴趣"
-description: "效率、转换、兴趣"
+description: "AI不仅提效，更是释放创作兴趣与转换价值"
 pubDate: "2025-12-15"
 category: "Imported"
 tags: ["Youmind"]
