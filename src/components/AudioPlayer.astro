@@ -407,8 +407,9 @@ const { url, title = "收听本文" } = Astro.props;
 
             // 进度条点击
             progressContainer.addEventListener('click', (e) => {
+                const mouseEvent = e as MouseEvent;
                 const rect = (progressContainer as HTMLElement).getBoundingClientRect();
-                const percent = (e.clientX - rect.left) / rect.width;
+                const percent = (mouseEvent.clientX - rect.left) / rect.width;
                 audio.currentTime = percent * audio.duration;
             });
 

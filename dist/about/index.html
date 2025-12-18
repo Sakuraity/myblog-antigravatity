@@ -1,23 +1,31 @@
 <!DOCTYPE html><html lang="zh-CN" class="scroll-smooth"> <head><!-- Global Metadata --><meta charset="utf-8"><link rel="canonical" href="https://kangyuan-blog.vercel.app/about/"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v4.16.19"><!-- Primary Meta Tags --><title>关于我 | Kangyuan&#39;s Blog</title><meta name="title" content="关于我 | Kangyuan's Blog"><meta name="description" content="A Rational Elegance Blog"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://kangyuan-blog.vercel.app/about/"><meta property="og:title" content="关于我 | Kangyuan's Blog"><meta property="og:description" content="A Rational Elegance Blog"><meta property="og:image" content="https://kangyuan-blog.vercel.app/favicon.svg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://kangyuan-blog.vercel.app/about/"><meta property="twitter:title" content="关于我 | Kangyuan's Blog"><meta property="twitter:description" content="A Rational Elegance Blog"><meta property="twitter:image" content="https://kangyuan-blog.vercel.app/favicon.svg"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script>
-			// Dark mode initialization
-			const theme = (() => {
-				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-					return localStorage.getItem('theme');
+			// Dark mode initialization - 封装为函数
+			function applyTheme() {
+				const theme = (() => {
+					if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+						return localStorage.getItem('theme');
+					}
+					if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+						return 'dark';
+					}
+					return 'light';
+				})();
+			
+				if (theme === 'dark') {
+					document.documentElement.classList.add('dark');
+				} else {
+					document.documentElement.classList.remove('dark');
 				}
-				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-					return 'dark';
-				}
-				return 'light';
-			})();
-		
-			if (theme === 'dark') {
-				document.documentElement.classList.add('dark');
-			} else {
-				document.documentElement.classList.remove('dark');
+			
+				window.localStorage.setItem('theme', theme);
 			}
-		
-			window.localStorage.setItem('theme', theme);
-		</script><link rel="stylesheet" href="/_astro/about.B9RkKaDr.css"><script type="module" src="/_astro/hoisted.Cy83naUs.js"></script></head> <body class="bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark font-sans antialiased min-h-screen flex flex-col transition-colors duration-300"> <header class="sticky top-0 z-50 w-full border-b border-black/5 dark:border-white/10 bg-bg-light/80 dark:bg-bg-dark/80 backdrop-blur-md"> <div class="max-w-6xl mx-auto px-6 h-16 grid grid-cols-12 items-center"> <!-- Left: Logo --> <div class="col-span-3 flex justify-start"> <a href="/" class="font-serif text-xl font-bold tracking-tight hover:text-primary transition-colors">
+			
+			// 立即应用主题（防止闪烁）
+			applyTheme();
+			
+			// View Transitions 支持 - 在每次页面切换后重新应用主题
+			document.addEventListener('astro:after-swap', applyTheme);
+		</script><link rel="stylesheet" href="/_astro/about.DDYS11iE.css"><script type="module" src="/_astro/hoisted.qftKdWvH.js"></script></head> <body class="bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark font-sans antialiased min-h-screen flex flex-col transition-colors duration-300"> <header class="sticky top-0 z-50 w-full border-b border-black/5 dark:border-white/10 bg-bg-light/80 dark:bg-bg-dark/80 backdrop-blur-md"> <div class="max-w-6xl mx-auto px-6 h-16 grid grid-cols-12 items-center"> <!-- Left: Logo --> <div class="col-span-3 flex justify-start"> <a href="/" class="font-serif text-xl font-bold tracking-tight hover:text-primary transition-colors">
 Kangyuan's Blog
 </a> </div> <!-- Center: Nav --> <div class="col-span-6 flex justify-center"> <nav class="flex items-center gap-8 text-sm font-medium text-text-muted-light dark:text-text-muted-dark"> <a href="/" class="hover:text-text-light dark:hover:text-text-dark transition-colors relative group">
 Home
