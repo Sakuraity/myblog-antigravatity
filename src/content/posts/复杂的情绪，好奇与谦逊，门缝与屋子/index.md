@@ -2,8 +2,7 @@
 title: "复杂的情绪，好奇与谦逊，门缝与屋子"
 description: "接纳复杂情绪，保持好奇与谦逊的探索勇气"
 pubDate: "2025-12-15"
-category: "Imported"
-tags: ["Youmind"]
+tags: ["思考"]
 ---
 
 

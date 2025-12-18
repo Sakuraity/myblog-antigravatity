@@ -2,8 +2,7 @@
 title: "精英叙事的紧绷，而我只想松弛"
 description: "反思精英叙事焦虑，追求普通生活松弛感"
 pubDate: "2025-12-15"
-category: "Imported"
-tags: ["Youmind"]
+tags: ["思考"]
 ---
 
 昨天在看了温丸子的一篇 Post。

@@ -180,6 +180,13 @@ declare module 'astro:content' {
 } & { render(): Render[".md"] };
 };
 "posts": {
+"atlassian-的起点/index.md": {
+	id: "atlassian-的起点/index.md";
+  slug: "atlassian-的起点";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".md"] };
 "为什么是诺基亚/index.md": {
 	id: "为什么是诺基亚/index.md";
   slug: "为什么是诺基亚";

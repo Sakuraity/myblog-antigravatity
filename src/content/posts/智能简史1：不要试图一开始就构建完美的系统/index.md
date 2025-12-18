@@ -2,8 +2,7 @@
 title: "智能简史#1：不要试图一开始就构建完美的系统"
 description: "从线虫到扫地机器人，构建智能系统的渐进之路"
 pubDate: "2025-12-15"
-category: "Imported"
-tags: ["Youmind"]
+tags: ["iRobot","思考"]
 ---
 
 

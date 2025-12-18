@@ -2,8 +2,7 @@
 title: "商业化策略的“五看”"
 description: "五维度洞察商业增长：市场竞对客户产品业务"
 pubDate: "2025-12-15"
-category: "Imported"
-tags: ["Youmind"]
+tags: ["分析"]
 ---
 
 

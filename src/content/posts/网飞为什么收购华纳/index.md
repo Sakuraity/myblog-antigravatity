@@ -2,8 +2,7 @@
 title: "网飞为什么收购华纳"
 description: "网飞增长遇瓶颈，收购华纳意在IP与护城河"
 pubDate: "2025-12-15"
-category: "Imported"
-tags: ["Youmind"]
+tags: ["Netflix","分析"]
 ---
 
 

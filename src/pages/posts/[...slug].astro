@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import AudioPlayer from '../../components/AudioPlayer.astro';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('posts');
@@ -32,6 +33,11 @@ const { Content } = await post.render();
 			<p class="text-xl md:text-2xl text-text-muted-light dark:text-text-muted-dark italic font-serif">
 				{post.data.description}
 			</p>
+			{post.data.audioUrl && (
+				<div class="pt-4">
+					<AudioPlayer url={post.data.audioUrl} title="收听本文" />
+				</div>
+			)}
 		</header>
 		
 		<div class="prose prose-lg md:prose-xl dark:prose-invert mx-auto prose-headings:font-serif prose-headings:font-bold prose-a:text-primary hover:prose-a:text-primary/80 prose-img:rounded-lg">

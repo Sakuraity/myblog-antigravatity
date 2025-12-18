@@ -104,6 +104,82 @@ async function generateAiSummary(content) {
     }
 }
 
+// Call AI to generate tags based on content
+async function generateAiTags(content) {
+    if (!AI_API_KEY) return ["思考"]; // 无 API Key 时默认返回
+
+    try {
+        const prompt = `请分析以下博客文章内容，生成合适的标签。规则如下：
+
+1. 公司标签：如果文章主要讨论特定公司（如 Google、Bytedance、NVIDIA、Netflix、Apple、Microsoft、Meta、Amazon、OpenAI、Tesla、Nokia、Intel、AMD 等），提取公司名作为标签（英文大小写保持原样）
+2. 深度标签：如果文章是采访、对话记录、深度访谈或人物专访，添加"深度"标签
+3. 分析标签：如果文章是分析具体问题、商业案例、策略研究，添加"分析"标签
+4. 思考标签：如果以上都不适用，添加"思考"标签
+
+注意：
+- 一篇文章可以有多个标签
+- 只返回 JSON 数组格式，例如 ["NVIDIA", "Nokia", "分析"]，不要其他文字
+
+文章内容：
+${content.slice(0, 3000)}`;
+
+        const data = JSON.stringify({
+            model: AI_MODEL,
+            messages: [
+                { role: "system", content: "你是一个博客标签分类助手。只返回 JSON 数组，不要任何其他文字。" },
+                { role: "user", content: prompt }
+            ],
+            temperature: 0.3,
+            max_tokens: 100
+        });
+
+        const url = `${AI_BASE_URL}/chat/completions`;
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${AI_API_KEY}`
+            }
+        };
+
+        return new Promise((resolve) => {
+            const req = https.request(url, options, (res) => {
+                let body = '';
+                res.on('data', (chunk) => body += chunk);
+                res.on('end', () => {
+                    if (res.statusCode >= 200 && res.statusCode < 300) {
+                        try {
+                            const result = JSON.parse(body);
+                            let tagsStr = result.choices[0]?.message?.content?.trim();
+                            // 尝试解析 JSON 数组
+                            const tags = JSON.parse(tagsStr);
+                            if (Array.isArray(tags) && tags.length > 0) {
+                                resolve(tags);
+                            } else {
+                                resolve(["思考"]);
+                            }
+                        } catch (e) {
+                            console.warn('      ⚠️  AI Tags parse error:', e.message);
+                            resolve(["思考"]);
+                        }
+                    } else {
+                        console.warn(`      ⚠️  AI Tags API failed: ${res.statusCode}`);
+                        resolve(["思考"]);
+                    }
+                });
+            });
+            req.on('error', (e) => {
+                console.warn('      ⚠️  AI Tags request error:', e.message);
+                resolve(["思考"]);
+            });
+            req.write(data);
+            req.end();
+        });
+    } catch (e) {
+        return ["思考"];
+    }
+}
+
 // Download remote file
 async function downloadFile(url, destPath) {
     const protocol = url.startsWith('https') ? https : http;
@@ -123,13 +199,16 @@ async function downloadFile(url, destPath) {
 }
 
 // Generate simple frontmatter
-async function createFrontmatter(title, content, dateStr) {
+async function createFrontmatter(title, content, dateStr, audioUrl = null) {
     const today = new Date().toISOString().split('T')[0];
     const pubDate = dateStr || today;
 
-    // Attempt to extract tags from title if like "[Tag] Title"
-    let tags = ["Youmind"];
     let cleanTitle = title;
+
+    // Call AI to generate smart tags
+    process.stdout.write('      🏷️  Generating AI tags... ');
+    let tags = await generateAiTags(content);
+    console.log(`Done. Tags: ${JSON.stringify(tags)}`);
 
     let summary = '';
 
@@ -159,15 +238,22 @@ async function createFrontmatter(title, content, dateStr) {
         summary = summary.substring(0, 20) + "...";
     }
 
-    return `---
+    // Build frontmatter with optional audioUrl
+    let frontmatter = `---
 title: "${cleanTitle.replace(/"/g, '\\"')}"
 description: "${summary.replace(/"/g, '\\"')}"
 pubDate: "${pubDate}"
-category: "Imported"
-tags: ${JSON.stringify(tags)}
----
+tags: ${JSON.stringify(tags)}`;
+
+    if (audioUrl) {
+        frontmatter += `\naudioUrl: "${audioUrl}"`;
+    }
+
+    frontmatter += `\n---
 
 `;
+
+    return frontmatter;
 }
 
 function extractSummaryFromContent(content) {
@@ -298,10 +384,21 @@ async function processFile(filePath, sourceDir = null) {
             content = content.replace(fullMatch, newMarkdown);
         }
 
+        // --- Audio Handling ---
+        // Extract audio link from content (format: [Audio](url))
+        const audioRegex = /^\[Audio\]\((https?:\/\/[^\s)]+\.mp3)\)\s*$/m;
+        const audioMatch = content.match(audioRegex);
+        let audioUrl = null;
+        if (audioMatch) {
+            audioUrl = audioMatch[1];
+            content = content.replace(audioRegex, '');
+            console.log(`      🎵 Found audio: ${audioUrl.slice(0, 50)}...`);
+        }
+
         // --- Frontmatter ---
         if (!content.trim().startsWith('---')) {
             const title = extractTitleFromContent(content);
-            const frontmatter = await createFrontmatter(title, content);
+            const frontmatter = await createFrontmatter(title, content, null, audioUrl);
             content = frontmatter + content;
         }
 

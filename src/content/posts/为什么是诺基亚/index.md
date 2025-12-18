@@ -2,8 +2,7 @@
 title: "为什么是诺基亚？"
 description: "英伟达投资诺基亚布局AI基础设施。"
 pubDate: "2025-12-17"
-category: "Imported"
-tags: ["Youmind"]
+tags: ["NVIDIA","Nokia","Microsoft","Intel","分析"]
 ---
 
 
