@@ -1,0 +1,87 @@
+---
+---
+
+<div class="christmas-card relative w-full max-w-md mx-auto p-8 rounded-2xl overflow-hidden shadow-2xl text-center transform hover:scale-105 transition-transform duration-300">
+  <!-- Dynamic Snow Background -->
+  <div class="snow absolute inset-0 pointer-events-none opacity-50"></div>
+  
+  <div class="relative z-10">
+    <div class="text-6xl mb-4 animate-bounce">🎄</div>
+    <h2 class="text-3xl font-serif font-bold text-white mb-2 drop-shadow-md">Christmas Countdown</h2>
+    <p class="text-white/90 font-sans mb-6">Waiting for Santa...</p>
+    
+    <div class="grid grid-cols-4 gap-4 mb-6">
+      <div class="countdown-item bg-white/20 backdrop-blur-sm rounded-lg p-3">
+        <span id="days" class="block text-3xl font-bold text-white">00</span>
+        <span class="text-xs text-white/80 uppercase tracking-wider">Days</span>
+      </div>
+      <div class="countdown-item bg-white/20 backdrop-blur-sm rounded-lg p-3">
+        <span id="hours" class="block text-3xl font-bold text-white">00</span>
+        <span class="text-xs text-white/80 uppercase tracking-wider">Hours</span>
+      </div>
+      <div class="countdown-item bg-white/20 backdrop-blur-sm rounded-lg p-3">
+        <span id="minutes" class="block text-3xl font-bold text-white">00</span>
+        <span class="text-xs text-white/80 uppercase tracking-wider">Mins</span>
+      </div>
+      <div class="countdown-item bg-white/20 backdrop-blur-sm rounded-lg p-3">
+        <span id="seconds" class="block text-3xl font-bold text-white">00</span>
+        <span class="text-xs text-white/80 uppercase tracking-wider">Secs</span>
+      </div>
+    </div>
+    
+    <p class="text-white/80 font-serif italic text-sm">Have a holly jolly Christmas!</p>
+  </div>
+</div>
+
+<style>
+  .christmas-card {
+    background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
+    border: 2px solid #c41e3a;
+    box-shadow: 0 0 20px rgba(196, 30, 58, 0.3);
+  }
+
+  .countdown-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Simple snow animation */
+  .snow {
+    background-image: 
+      radial-gradient(circle at 50% 50%, white 2px, transparent 2.5px),
+      radial-gradient(circle at 30% 70%, white 1.5px, transparent 2px),
+      radial-gradient(circle at 70% 30%, white 2px, transparent 2.5px);
+    background-size: 150px 150px;
+    animation: snow 10s linear infinite;
+  }
+
+  @keyframes snow {
+    from { background-position: 0 0; }
+    to { background-position: 0 300px; }
+  }
+</style>
+
+<script>
+  function updateCountdown() {
+    const targetDate = new Date('December 25, 2025 00:00:00').getTime();
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    const updateElement = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = value.toString().padStart(2, '0');
+    };
+
+    updateElement('days', days);
+    updateElement('hours', hours);
+    updateElement('minutes', minutes);
+    updateElement('seconds', seconds);
+  }
+
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+</script>

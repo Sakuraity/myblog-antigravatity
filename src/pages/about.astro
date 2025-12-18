@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ChristmasCountdown from '../components/ChristmasCountdown.astro';
 ---
 
 <Layout title="关于我 | Kangyuan's Blog">
@@ -7,14 +8,14 @@ import Layout from '../layouts/Layout.astro';
 		<header class="text-center mb-12">
 			<h1 class="text-4xl font-serif font-bold mb-4">About Me</h1>
 			<p class="text-xl text-text-muted-light dark:text-text-muted-dark italic font-serif">
-				这里是我的思考角落。
+				装修中！
 			</p>
 		</header>
 		
 		<div class="prose prose-lg dark:prose-invert mx-auto font-sans">
-			<p>
-				你好，我是 Kangyuan。
-			</p>
+			<ChristmasCountdown />
+			
+			<div class="mt-12 text-center opacity-50">
 			<p>
 				这是一个追求**「理性优雅」**的博客。在这里，我记录技术探索、生活随笔以及对世界的观察。
 			</p>
@@ -29,6 +30,7 @@ import Layout from '../layouts/Layout.astro';
 				<li>Email: <a href="mailto:your-email@example.com">your-email@example.com</a></li>
 				<li>GitHub: <a href="https://github.com/yourusername">@yourusername</a></li>
 			</ul>
+			</div>
 		</div>
 	</article>
 </Layout>
