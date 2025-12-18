@@ -45,6 +45,16 @@ const { posts } = Astro.props;
              <p class="text-text-muted-light dark:text-text-muted-dark line-clamp-2">
                 {post.data.description}
             </p>
+            {post.data.tags && post.data.tags.length > 0 && (
+                <div class="flex flex-wrap gap-2 pt-2 relative z-10">
+                    {post.data.tags.map((t) => (
+                        <a href={`/tags/${t}`} class={`text-xs font-medium text-text-muted-light dark:text-text-muted-dark bg-gray-100 dark:bg-white/5 px-2 py-0.5 rounded hover:bg-gray-200 dark:hover:bg-white/10 transition-colors duration-200 ${t === tag ? 'bg-gray-200 dark:bg-white/10' : ''}`}>
+                            #{t}
+                        </a>
+                    ))}
+                </div>
+            )}
+
         </article>
     ))}
   </section>
